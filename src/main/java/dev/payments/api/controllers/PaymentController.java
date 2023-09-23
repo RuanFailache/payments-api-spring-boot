@@ -6,6 +6,8 @@ import dev.payments.api.dtos.UpdatePaymentStatusDto;
 import dev.payments.api.entities.Payment;
 import dev.payments.api.services.PaymentService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,13 @@ public class PaymentController {
         PaymentDto updatedPayment = paymentService.updatePaymentStatus(updatePaymentStatusDto);
 
         return new ResponseEntity<>(updatedPayment, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<PaymentDto>> getPayments(Pageable pageable) {
+        Page<PaymentDto> payments = paymentService.getPayments(pageable);
+
+        return new ResponseEntity<>(payments, HttpStatus.OK);
     }
 
 }

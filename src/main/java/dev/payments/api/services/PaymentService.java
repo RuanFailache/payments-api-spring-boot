@@ -8,6 +8,8 @@ import dev.payments.api.entities.Payment;
 import dev.payments.api.entities.PaymentMethod;
 import dev.payments.api.entities.PaymentStatus;
 import dev.payments.api.repositories.PaymentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -88,6 +90,10 @@ public class PaymentService {
 
         return new PaymentDto(updatedPayment);
 
+    }
+
+    public Page<PaymentDto> getPayments(Pageable pageable) {
+        return paymentRepository.findAll(pageable).map(PaymentDto::new);
     }
 
 }
