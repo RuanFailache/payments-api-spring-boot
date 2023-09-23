@@ -3,7 +3,7 @@ package dev.payments.api.controllers;
 import dev.payments.api.dtos.CreatePaymentDto;
 import dev.payments.api.dtos.PaymentDto;
 import dev.payments.api.dtos.UpdatePaymentStatusDto;
-import dev.payments.api.entities.Payment;
+import dev.payments.api.entities.PaymentStatus;
 import dev.payments.api.services.PaymentService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -37,8 +37,13 @@ public class PaymentController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PaymentDto>> getPayments(Pageable pageable) {
-        Page<PaymentDto> payments = paymentService.getPayments(pageable);
+    public ResponseEntity<Page<PaymentDto>> getPayments(
+            @RequestParam(required = false) Long debitCode,
+            @RequestParam(required = false) String userIdentification,
+            @RequestParam(required = false) PaymentStatus status,
+            Pageable pageable
+    ) {
+        Page<PaymentDto> payments = paymentService.getPayments(debitCode, status, userIdentification, pageable);
 
         return new ResponseEntity<>(payments, HttpStatus.OK);
     }

@@ -1,6 +1,7 @@
 package dev.payments.api.services;
 
 import java.util.*;
+
 import dev.payments.api.dtos.CreatePaymentDto;
 import dev.payments.api.dtos.PaymentDto;
 import dev.payments.api.dtos.UpdatePaymentStatusDto;
@@ -8,6 +9,7 @@ import dev.payments.api.entities.Payment;
 import dev.payments.api.entities.PaymentMethod;
 import dev.payments.api.entities.PaymentStatus;
 import dev.payments.api.repositories.PaymentRepository;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -92,8 +94,22 @@ public class PaymentService {
 
     }
 
-    public Page<PaymentDto> getPayments(Pageable pageable) {
-        return paymentRepository.findAll(pageable).map(PaymentDto::new);
+    public Page<PaymentDto> getPayments(
+            Long debitCode,
+            PaymentStatus paymentStatus,
+            String userIdentification,
+            Pageable pageable
+    ) {
+
+        Payment payment = new Payment();
+        payment.setDebitCode(debitCode);
+        payment.setStatus(paymentStatus);
+        payment.setUserIdentification(userIdentification);
+
+        Page<Payment> payments = paymentRepository.findAll(Example.of(payment), pageable);
+
+        return payments.map(PaymentDto::new);
+
     }
 
 }
