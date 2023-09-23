@@ -1,7 +1,6 @@
 package dev.payments.api.controllers;
 
 import dev.payments.api.dtos.CreatePaymentDto;
-import dev.payments.api.dtos.DeletePaymentDto;
 import dev.payments.api.dtos.PaymentDto;
 import dev.payments.api.dtos.UpdatePaymentStatusDto;
 import dev.payments.api.entities.PaymentStatus;
@@ -12,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("payments")
@@ -49,9 +50,9 @@ public class PaymentController {
         return new ResponseEntity<>(payments, HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deletePayment(@RequestBody @Valid DeletePaymentDto deletePaymentDto) {
-        paymentService.deletePayment(deletePaymentDto.id());
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePayment(@PathVariable UUID id) {
+        paymentService.deletePayment(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
