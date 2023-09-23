@@ -2,6 +2,7 @@ package dev.payments.api.services;
 
 import java.util.*;
 import dev.payments.api.dtos.CreatePaymentDto;
+import dev.payments.api.dtos.PaymentDto;
 import dev.payments.api.dtos.UpdatePaymentStatusDto;
 import dev.payments.api.entities.Payment;
 import dev.payments.api.entities.PaymentMethod;
@@ -20,7 +21,7 @@ public class PaymentService {
         this.paymentRepository = paymentRepository;
     }
 
-    public Payment createPayment(CreatePaymentDto createPaymentDto) {
+    public PaymentDto createPayment(CreatePaymentDto createPaymentDto) {
 
         HashSet<PaymentMethod> cardRelatedMethods = new HashSet<>();
         cardRelatedMethods.add(PaymentMethod.DEBIT_CARD);
@@ -37,12 +38,13 @@ public class PaymentService {
         }
 
         Payment payment = new Payment(createPaymentDto);
+        Payment createdPayment = paymentRepository.save(payment);
 
-        return paymentRepository.save(payment);
+        return new PaymentDto(createdPayment);
 
     }
 
-    public Payment updatePaymentStatus(UpdatePaymentStatusDto updatePaymentStatusDto) {
+    public PaymentDto updatePaymentStatus(UpdatePaymentStatusDto updatePaymentStatusDto) {
 
         UUID paymentId = updatePaymentStatusDto.id();
         PaymentStatus paymentStatus = updatePaymentStatusDto.status();
@@ -82,7 +84,9 @@ public class PaymentService {
 
         foundPayment.setStatus(paymentStatus);
 
-        return paymentRepository.save(foundPayment);
+        Payment updatedPayment = paymentRepository.save(foundPayment);
+
+        return new PaymentDto(updatedPayment);
 
     }
 

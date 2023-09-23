@@ -1,6 +1,7 @@
 package dev.payments.api.controllers;
 
 import dev.payments.api.dtos.CreatePaymentDto;
+import dev.payments.api.dtos.PaymentDto;
 import dev.payments.api.dtos.UpdatePaymentStatusDto;
 import dev.payments.api.entities.Payment;
 import dev.payments.api.services.PaymentService;
@@ -20,15 +21,15 @@ public class PaymentController {
     }
 
     @PostMapping
-    public ResponseEntity<Payment> postPayments(@RequestBody @Valid CreatePaymentDto createPaymentDto) {
-        Payment createdPayment = paymentService.createPayment(createPaymentDto);
+    public ResponseEntity<PaymentDto> postPayments(@RequestBody @Valid CreatePaymentDto createPaymentDto) {
+        PaymentDto createdPayment = paymentService.createPayment(createPaymentDto);
 
         return new ResponseEntity<>(createdPayment, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Payment> putPayments(@RequestBody @Valid UpdatePaymentStatusDto updatePaymentStatusDto) {
-        Payment updatedPayment = paymentService.updatePaymentStatus(updatePaymentStatusDto);
+    public ResponseEntity<PaymentDto> putPayments(@RequestBody @Valid UpdatePaymentStatusDto updatePaymentStatusDto) {
+        PaymentDto updatedPayment = paymentService.updatePaymentStatus(updatePaymentStatusDto);
 
         return new ResponseEntity<>(updatedPayment, HttpStatus.CREATED);
     }
