@@ -1,5 +1,6 @@
 package dev.payments.api.entities;
 
+import dev.payments.api.dtos.CreatePaymentDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,14 +20,14 @@ import java.util.UUID;
 public class Payment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(name = "debit_code", nullable = false, unique = true)
     private Long debitCode;
 
-    @Column(nullable = false)
-    private String user;
+    @Column(name = "user_identification", nullable = false)
+    private String userIdentification;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -38,7 +39,8 @@ public class Payment {
     @Column(name = "card_number")
     private String cardNumber;
 
-    private BigDecimal value;
+    @Column(name = "payment_value")
+    private BigDecimal paymentValue;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -49,5 +51,13 @@ public class Payment {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    public Payment(CreatePaymentDto createPaymentDto) {
+        this.cardNumber = createPaymentDto.cardNumber();
+        this.debitCode = createPaymentDto.debitCode();
+        this.method = createPaymentDto.method();
+        this.userIdentification = createPaymentDto.userIdentification();
+        this.paymentValue = createPaymentDto.paymentValue();
+    }
 
 }
