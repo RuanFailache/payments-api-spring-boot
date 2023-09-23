@@ -9,6 +9,7 @@ import dev.payments.api.entities.Payment;
 import dev.payments.api.entities.PaymentMethod;
 import dev.payments.api.entities.PaymentStatus;
 import dev.payments.api.repositories.PaymentRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ public class PaymentService {
         this.paymentRepository = paymentRepository;
     }
 
+    @Transactional
     public PaymentDto createPayment(CreatePaymentDto createPaymentDto) {
 
         HashSet<PaymentMethod> cardRelatedMethods = new HashSet<>();
@@ -48,6 +50,7 @@ public class PaymentService {
 
     }
 
+    @Transactional
     public PaymentDto updatePaymentStatus(UpdatePaymentStatusDto updatePaymentStatusDto) {
 
         UUID paymentId = updatePaymentStatusDto.id();

@@ -29,8 +29,8 @@ public class PaymentController {
         return new ResponseEntity<>(createdPayment, HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<PaymentDto> putPayments(@RequestBody @Valid UpdatePaymentStatusDto updatePaymentStatusDto) {
+    @PatchMapping
+    public ResponseEntity<PaymentDto> patchPayments(@RequestBody @Valid UpdatePaymentStatusDto updatePaymentStatusDto) {
         PaymentDto updatedPayment = paymentService.updatePaymentStatus(updatePaymentStatusDto);
 
         return new ResponseEntity<>(updatedPayment, HttpStatus.CREATED);
