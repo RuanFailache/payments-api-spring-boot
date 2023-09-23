@@ -25,27 +25,27 @@ public class PaymentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> postPayments(@RequestBody @Valid CreatePaymentDto createPaymentDto) {
-        PaymentDto createdPayment = paymentService.createPayment(createPaymentDto);
+    public ResponseEntity<PaymentDto> postPayments(@RequestBody @Valid CreatePaymentDto createPaymentDto) {
+        var createdPayment = paymentService.createPayment(createPaymentDto);
 
         return new ResponseEntity<>(createdPayment, HttpStatus.CREATED);
     }
 
-    @PatchMapping
-    public ResponseEntity<?> patchPayments(@RequestBody @Valid UpdatePaymentStatusDto updatePaymentStatusDto) {
-        PaymentDto updatedPayment = paymentService.updatePaymentStatus(updatePaymentStatusDto);
+    @PutMapping
+    public ResponseEntity<PaymentDto> putPayments(@RequestBody @Valid UpdatePaymentStatusDto updatePaymentStatusDto) {
+        var updatedPayment = paymentService.updatePaymentStatus(updatePaymentStatusDto);
 
-        return new ResponseEntity<>(updatedPayment, HttpStatus.CREATED);
+        return new ResponseEntity<>(updatedPayment, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<?> getPayments(
+    public ResponseEntity<Page<PaymentDto>> getPayments(
             @RequestParam(required = false) Long debitCode,
             @RequestParam(required = false) String userIdentification,
             @RequestParam(required = false) PaymentStatus status,
             Pageable pageable
     ) {
-        Page<PaymentDto> payments = paymentService.getPayments(debitCode, status, userIdentification, pageable);
+        var payments = paymentService.getPayments(debitCode, status, userIdentification, pageable);
 
         return new ResponseEntity<>(payments, HttpStatus.OK);
     }

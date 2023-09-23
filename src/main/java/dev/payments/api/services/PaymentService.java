@@ -14,10 +14,10 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-@Component
+@Service
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
@@ -68,21 +68,21 @@ public class PaymentService {
 
         if (foundPaymentStatus == PaymentStatus.SUCCESS) {
             throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN,
+                    HttpStatus.BAD_REQUEST,
                     "O pagamento já foi concluido!"
             );
         }
 
         if (foundPaymentStatus == PaymentStatus.FAILED && paymentStatus != PaymentStatus.PENDING) {
             throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN,
+                    HttpStatus.BAD_REQUEST,
                     "O pagamento atual falhou, logo só pode ser alterado para o status 'pendente'!"
             );
         }
 
         if (foundPaymentStatus == PaymentStatus.PENDING && paymentStatus == PaymentStatus.PENDING) {
             throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN,
+                    HttpStatus.BAD_REQUEST,
                     "O pagamento com estado pendente só pode ser alterado para o status de sucesso ou de falha!"
             );
         }
@@ -128,7 +128,7 @@ public class PaymentService {
 
         if (foundPayment.getStatus() != PaymentStatus.PENDING) {
             throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN,
+                    HttpStatus.BAD_REQUEST,
                     "O pagamento não pode ser deletado, pois não está com processamento pendente!"
             );
         }
