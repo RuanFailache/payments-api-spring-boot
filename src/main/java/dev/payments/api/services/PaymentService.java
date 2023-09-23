@@ -23,8 +23,8 @@ public class PaymentService {
     public Payment createPayment(CreatePaymentDto createPaymentDto) {
 
         HashSet<PaymentMethod> cardRelatedMethods = new HashSet<>();
-        cardRelatedMethods.add(PaymentMethod.cartao_debito);
-        cardRelatedMethods.add(PaymentMethod.cartao_credito);
+        cardRelatedMethods.add(PaymentMethod.DEBIT_CARD);
+        cardRelatedMethods.add(PaymentMethod.CREDIT_CARD);
 
         boolean isCardNumberNullable = createPaymentDto.cardNumber() == null;
         boolean isCardRelatedMethod = cardRelatedMethods.contains(createPaymentDto.method());
@@ -70,6 +70,13 @@ public class PaymentService {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN,
                     "O pagamento atual falhou, logo só pode ser alterado para o status 'pendente'!"
+            );
+        }
+
+        if (foundPaymentStatus == PaymentStatus.PENDING && paymentStatus == PaymentStatus.PENDING) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "O pagamento com estado pendente só pode ser alterado para o status de sucesso ou de falha!"
             );
         }
 
