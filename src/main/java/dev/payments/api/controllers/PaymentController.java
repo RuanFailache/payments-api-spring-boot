@@ -1,6 +1,7 @@
 package dev.payments.api.controllers;
 
 import dev.payments.api.dtos.CreatePaymentDto;
+import dev.payments.api.dtos.DeletePaymentDto;
 import dev.payments.api.dtos.PaymentDto;
 import dev.payments.api.dtos.UpdatePaymentStatusDto;
 import dev.payments.api.entities.PaymentStatus;
@@ -23,21 +24,21 @@ public class PaymentController {
     }
 
     @PostMapping
-    public ResponseEntity<PaymentDto> postPayments(@RequestBody @Valid CreatePaymentDto createPaymentDto) {
+    public ResponseEntity<?> postPayments(@RequestBody @Valid CreatePaymentDto createPaymentDto) {
         PaymentDto createdPayment = paymentService.createPayment(createPaymentDto);
 
         return new ResponseEntity<>(createdPayment, HttpStatus.CREATED);
     }
 
     @PatchMapping
-    public ResponseEntity<PaymentDto> patchPayments(@RequestBody @Valid UpdatePaymentStatusDto updatePaymentStatusDto) {
+    public ResponseEntity<?> patchPayments(@RequestBody @Valid UpdatePaymentStatusDto updatePaymentStatusDto) {
         PaymentDto updatedPayment = paymentService.updatePaymentStatus(updatePaymentStatusDto);
 
         return new ResponseEntity<>(updatedPayment, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<Page<PaymentDto>> getPayments(
+    public ResponseEntity<?> getPayments(
             @RequestParam(required = false) Long debitCode,
             @RequestParam(required = false) String userIdentification,
             @RequestParam(required = false) PaymentStatus status,
@@ -46,6 +47,13 @@ public class PaymentController {
         Page<PaymentDto> payments = paymentService.getPayments(debitCode, status, userIdentification, pageable);
 
         return new ResponseEntity<>(payments, HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deletePayment(@RequestBody @Valid DeletePaymentDto deletePaymentDto) {
+        paymentService.deletePayment(deletePaymentDto.id());
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

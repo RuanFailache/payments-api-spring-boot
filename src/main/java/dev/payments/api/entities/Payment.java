@@ -42,6 +42,8 @@ public class Payment {
     @Column(name = "payment_value")
     private BigDecimal paymentValue;
 
+    private boolean isCancelled = false;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")

@@ -56,17 +56,15 @@ public class PaymentService {
         UUID paymentId = updatePaymentStatusDto.id();
         PaymentStatus paymentStatus = updatePaymentStatusDto.status();
 
-        Optional<Payment> foundPaymentReference = paymentRepository.findById(paymentId);
+        Payment foundPayment = findPaymentById(paymentId);
+        PaymentStatus foundPaymentStatus = foundPayment.getStatus();
 
-        if (foundPaymentReference.isEmpty()) {
+        if (foundPayment.isCancelled()) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     "O pagamento não foi encontrado!"
             );
         }
-
-        Payment foundPayment = foundPaymentReference.get();
-        PaymentStatus foundPaymentStatus = foundPayment.getStatus();
 
         if (foundPaymentStatus == PaymentStatus.SUCCESS) {
             throw new ResponseStatusException(
@@ -108,10 +106,51 @@ public class PaymentService {
         payment.setDebitCode(debitCode);
         payment.setStatus(paymentStatus);
         payment.setUserIdentification(userIdentification);
+        payment.setCancelled(false);
 
         Page<Payment> payments = paymentRepository.findAll(Example.of(payment), pageable);
 
         return payments.map(PaymentDto::new);
+
+    }
+
+    @Transactional
+    public void deletePayment(UUID paymentId) {
+
+        Payment foundPayment = findPaymentById(paymentId);
+
+        if (foundPayment.isCancelled()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "O pagamento não foi encontrado!"
+            );
+        }
+
+        if (foundPayment.getStatus() != PaymentStatus.PENDING) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "O pagamento não pode ser deletado, pois não está com processamento pendente!"
+            );
+        }
+
+        foundPayment.setCancelled(true);
+
+        paymentRepository.save(foundPayment);
+
+    }
+
+    private Payment findPaymentById(UUID paymentId) {
+
+        Optional<Payment> foundPaymentReference = paymentRepository.findById(paymentId);
+
+        if (foundPaymentReference.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "O pagamento não foi encontrado!"
+            );
+        }
+
+        return foundPaymentReference.get();
 
     }
 
