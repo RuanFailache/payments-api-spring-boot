@@ -23,7 +23,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "debit_code", nullable = false, unique = true)
+    @Column(name = "debit_code", nullable = false)
     private Long debitCode;
 
     @Column(name = "user_identification", nullable = false)

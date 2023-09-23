@@ -3,30 +3,29 @@ package dev.payments.api.controllers;
 import dev.payments.api.dtos.CreatePaymentDto;
 import dev.payments.api.entities.Payment;
 import dev.payments.api.repositories.PaymentRepository;
+import dev.payments.api.services.PaymentService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("payments")
 public class PaymentController {
 
-    private final PaymentRepository paymentRepository;
+    private final PaymentService paymentService;
 
-    public PaymentController(PaymentRepository paymentRepository) {
-        this.paymentRepository = paymentRepository;
+    public PaymentController(PaymentService paymentService) {
+        this.paymentService = paymentService;
     }
 
     @PostMapping
     @Transactional
-    @ResponseStatus(HttpStatus.CREATED)
-    public String registerPayment(@RequestBody @Valid CreatePaymentDto createPaymentDto) {
-        Payment payment = new Payment(createPaymentDto);
+    public ResponseEntity<?> postPayment(@RequestBody @Valid CreatePaymentDto createPaymentDto) {
+        Payment createdPayment = paymentService.createPayment(createPaymentDto);
 
-        Payment createdPayment = paymentRepository.save(payment);
-
-        return createdPayment.getId().toString();
+        return new ResponseEntity<>(createdPayment, HttpStatus.CREATED);
     }
 
 }
