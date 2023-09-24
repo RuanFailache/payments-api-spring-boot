@@ -1,11 +1,10 @@
-package dev.payments.api.dtos;
+package dev.payments.api.presentation.dtos;
 
-import dev.payments.api.entities.Payment;
-import dev.payments.api.entities.PaymentMethod;
-import dev.payments.api.entities.PaymentStatus;
+import dev.payments.api.domain.entities.Payment;
+import dev.payments.api.domain.entities.PaymentMethod;
+import dev.payments.api.domain.entities.PaymentStatus;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.UUID;
 
 public record PaymentDto(

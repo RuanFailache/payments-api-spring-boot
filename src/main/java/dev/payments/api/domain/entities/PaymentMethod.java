@@ -1,4 +1,4 @@
-package dev.payments.api.entities;
+package dev.payments.api.domain.entities;
 
 public enum PaymentMethod {
     BILLET,

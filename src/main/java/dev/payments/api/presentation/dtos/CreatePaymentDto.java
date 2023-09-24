@@ -1,6 +1,6 @@
-package dev.payments.api.dtos;
+package dev.payments.api.presentation.dtos;
 
-import dev.payments.api.entities.PaymentMethod;
+import dev.payments.api.domain.entities.PaymentMethod;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

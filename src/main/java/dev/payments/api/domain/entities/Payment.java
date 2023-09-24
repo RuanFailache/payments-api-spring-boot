@@ -1,6 +1,6 @@
-package dev.payments.api.entities;
+package dev.payments.api.domain.entities;
 
-import dev.payments.api.dtos.CreatePaymentDto;
+import dev.payments.api.presentation.dtos.CreatePaymentDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

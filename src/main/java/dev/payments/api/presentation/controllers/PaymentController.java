@@ -1,8 +1,8 @@
-package dev.payments.api.controllers;
+package dev.payments.api.presentation.controllers;
 
-import dev.payments.api.dtos.*;
-import dev.payments.api.entities.PaymentStatus;
-import dev.payments.api.services.PaymentService;
+import dev.payments.api.presentation.dtos.*;
+import dev.payments.api.domain.entities.PaymentStatus;
+import dev.payments.api.presentation.services.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;

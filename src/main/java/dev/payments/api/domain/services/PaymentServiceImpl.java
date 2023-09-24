@@ -1,14 +1,15 @@
-package dev.payments.api.services;
+package dev.payments.api.domain.services;
 
 import java.util.*;
 
-import dev.payments.api.dtos.CreatePaymentDto;
-import dev.payments.api.dtos.PaymentDto;
-import dev.payments.api.dtos.UpdatePaymentStatusDto;
-import dev.payments.api.entities.Payment;
-import dev.payments.api.entities.PaymentMethod;
-import dev.payments.api.entities.PaymentStatus;
-import dev.payments.api.repositories.PaymentRepository;
+import dev.payments.api.presentation.dtos.CreatePaymentDto;
+import dev.payments.api.presentation.dtos.PaymentDto;
+import dev.payments.api.presentation.dtos.UpdatePaymentStatusDto;
+import dev.payments.api.domain.entities.Payment;
+import dev.payments.api.domain.entities.PaymentMethod;
+import dev.payments.api.domain.entities.PaymentStatus;
+import dev.payments.api.domain.repositories.PaymentRepository;
+import dev.payments.api.presentation.services.PaymentService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -18,14 +19,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class PaymentService {
+public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
 
-    public PaymentService(PaymentRepository paymentRepository) {
+    public PaymentServiceImpl(PaymentRepository paymentRepository) {
         this.paymentRepository = paymentRepository;
     }
 
+    @Override
     @Transactional
     public PaymentDto createPayment(CreatePaymentDto createPaymentDto) {
 
@@ -50,6 +52,7 @@ public class PaymentService {
 
     }
 
+    @Override
     @Transactional
     public PaymentDto updatePaymentStatus(UUID paymentId, UpdatePaymentStatusDto updatePaymentStatusDto) {
 
@@ -94,6 +97,7 @@ public class PaymentService {
 
     }
 
+    @Override
     public Page<PaymentDto> getPayments(
             Long debitCode,
             PaymentStatus paymentStatus,
@@ -113,6 +117,7 @@ public class PaymentService {
 
     }
 
+    @Override
     @Transactional
     public void deletePayment(UUID paymentId) {
 

@@ -1,11 +1,11 @@
 package dev.payments.api.controllers;
 
 import com.github.javafaker.Faker;
-import dev.payments.api.dtos.CreatePaymentDto;
-import dev.payments.api.dtos.UpdatePaymentStatusDto;
-import dev.payments.api.entities.PaymentMethod;
-import dev.payments.api.entities.PaymentStatus;
-import dev.payments.api.services.PaymentService;
+import dev.payments.api.presentation.dtos.CreatePaymentDto;
+import dev.payments.api.presentation.dtos.UpdatePaymentStatusDto;
+import dev.payments.api.domain.entities.PaymentMethod;
+import dev.payments.api.domain.entities.PaymentStatus;
+import dev.payments.api.presentation.services.PaymentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;

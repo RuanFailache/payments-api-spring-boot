@@ -1,6 +1,6 @@
-package dev.payments.api.repositories;
+package dev.payments.api.domain.repositories;
 
-import dev.payments.api.entities.Payment;
+import dev.payments.api.domain.entities.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
