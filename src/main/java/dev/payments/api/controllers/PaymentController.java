@@ -33,21 +33,28 @@ public class PaymentController {
     @ApiResponse(responseCode = "201", description = "Pagamento criado com sucesso")
     @ApiResponse(responseCode = "400", description = "Os dados fornecidos são inválidos")
     public ResponseEntity<PaymentDto> postPayments(@RequestBody @Valid CreatePaymentDto createPaymentDto) {
+
         var createdPayment = paymentService.createPayment(createPaymentDto);
 
         return new ResponseEntity<>(createdPayment, HttpStatus.CREATED);
+
     }
 
 
-    @PutMapping
+    @PutMapping("{id}")
     @Operation(summary = "Rota para atualizar o status de um pagamento")
     @ApiResponse(responseCode = "200", description = "Pagamento atualizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Pagamento com status fornecido inválido")
     @ApiResponse(responseCode = "404", description = "Pagamento não encontrado")
-    public ResponseEntity<PaymentDto> putPayments(@RequestBody @Valid UpdatePaymentStatusDto updatePaymentStatusDto) {
-        var updatedPayment = paymentService.updatePaymentStatus(updatePaymentStatusDto);
+    public ResponseEntity<PaymentDto> putPayments(
+            @PathVariable UUID id,
+            @RequestBody @Valid UpdatePaymentStatusDto updatePaymentStatusDto
+    ) {
+
+        var updatedPayment = paymentService.updatePaymentStatus(id, updatePaymentStatusDto);
 
         return new ResponseEntity<>(updatedPayment, HttpStatus.OK);
+
     }
 
 
@@ -60,9 +67,11 @@ public class PaymentController {
             @RequestParam(required = false) PaymentStatus status,
             Pageable pageable
     ) {
+
         var payments = paymentService.getPayments(debitCode, status, userIdentification, pageable);
 
         return new ResponseEntity<>(payments, HttpStatus.OK);
+
     }
 
 
@@ -72,9 +81,11 @@ public class PaymentController {
     @ApiResponse(responseCode = "400", description = "Pagamento já havia sido concluido")
     @ApiResponse(responseCode = "404", description = "Pagamento não encontrado")
     public ResponseEntity<?> deletePayment(@PathVariable UUID id) {
+
         paymentService.deletePayment(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
     }
 
 }

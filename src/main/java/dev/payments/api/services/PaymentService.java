@@ -51,9 +51,8 @@ public class PaymentService {
     }
 
     @Transactional
-    public PaymentDto updatePaymentStatus(UpdatePaymentStatusDto updatePaymentStatusDto) {
+    public PaymentDto updatePaymentStatus(UUID paymentId, UpdatePaymentStatusDto updatePaymentStatusDto) {
 
-        UUID paymentId = updatePaymentStatusDto.id();
         PaymentStatus paymentStatus = updatePaymentStatusDto.status();
 
         Payment foundPayment = findPaymentById(paymentId);

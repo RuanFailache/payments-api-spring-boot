@@ -9,9 +9,6 @@ import java.util.UUID;
 public record UpdatePaymentStatusDto(
 
         @NotNull
-        UUID id,
-
-        @NotNull
         PaymentStatus status
 
 ) {
